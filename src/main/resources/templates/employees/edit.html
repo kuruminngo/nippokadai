@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/header :: head_fragment(title=従業員更新)"></head>
+
+<body class="h-100 overflow-hidden">
+    <div class="row h-100">
+        <div class="h-100 p-3 mb-2 bg-dark text-white col-sm-2">
+            <nav th:replace="common/side :: copy"></nav>
+        </div>
+        <div class="mt-3 h-100 col-sm-10">
+            <!-- コンテンツ -->
+            <div class="container-fluid p-0">
+                <h1 class="h3 mb-3">従業員 更新</h1>
+            </div>
+
+            <!-- 説明文言 -->
+            <div class="bg-light p-3 mb-3 border"> <!-- 追加: 背景グレーの枠 -->
+                <p class="mb-0">パスワードは変更する場合のみ入力してください</p>
+            </div>
+
+            <!-- ここから追加: カードレイアウトとレスポンシブデザイン -->
+            <div class="col-12 col-xxl-6">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- ここまで追加 -->
+
+                            <form th:action="@{/employees/{code}/update(code=${employee.code})}" th:object="${employee}" method="post">
+                                <!-- 社員番号 -->
+                                <div class="mb-3"> <!-- 追加: マージンボトム -->
+                                    <label class="form-label">社員番号:</label> <!-- 追加: form-labelクラス -->
+                                    <span th:text="${employee.code}"></span>
+                                </div>
+
+                                <!-- 氏名 -->
+                                <div class="mb-3"> <!-- 追加: マージンボトム -->
+                                    <label class="form-label" for="name">氏名:</label> <!-- 追加: form-labelクラス -->
+                                    <input class="form-control" type="text" id="name" th:field="*{name}" /> <!-- 追加: form-controlクラス -->
+                                    <span th:errors="*{name}" class="text-danger"></span>
+                                </div>
+
+                                <!-- パスワード -->
+                                <div class="mb-3"> <!-- 追加: マージンボトム -->
+                                    <label class="form-label" for="password">パスワード:</label> <!-- 追加: form-labelクラス -->
+                                    <input class="form-control" type="password" id="password" th:field="*{password}" /> <!-- 追加: form-controlクラス -->
+                                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></div> <!-- 追加: text-dangerクラス -->
+                                    <span th:if="${passwordError} neq null" th:text="${passwordError}" class="text-danger"></span> 
+                                </div>
+
+                                <!-- 権限 -->
+                                <div class="mb-3"> <!-- 追加: マージンボトム -->
+                                    <label class="form-label" for="role">権限:</label> <!-- 追加: form-labelクラス -->
+                                    <select class="form-select" id="role" th:field="*{role}"> <!-- 追加: form-selectクラス -->
+                                        <option value="GENERAL" th:selected="${employee.role == 'GENERAL'}">一般</option>
+                                        <option value="ADMIN" th:selected="${employee.role == 'ADMIN'}">管理者</option>
+                                    </select>
+                                </div>
+
+                                <!-- 更新ボタン --><!-- 戻るボタン -->
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary">更新</button> <!-- 追加: btn btn-primaryクラス -->
+                                    <a href="/employees"><button class="btn btn-primary">戻る</button></a> <!-- 追加: btn btn-primaryクラス -->
+                                </div>
+                            </form>
+
+                            <!-- ここから追加: カードレイアウトの閉じタグ -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ここまで追加 -->
+
+        </div>
+    </div>
+</body>
+</html>
