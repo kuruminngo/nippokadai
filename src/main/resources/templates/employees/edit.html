@@ -44,8 +44,7 @@
                                 <div class="mb-3"> <!-- 追加: マージンボトム -->
                                     <label class="form-label" for="password">パスワード:</label> <!-- 追加: form-labelクラス -->
                                     <input class="form-control" type="password" id="password" th:field="*{password}" /> <!-- 追加: form-controlクラス -->
-                                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></div> <!-- 追加: text-dangerクラス -->
-                                    <span th:if="${passwordError} neq null" th:text="${passwordError}" class="text-danger"></span> 
+                                    <span th:if="${passwordError} neq null" th:text="${passwordError}" class="text-danger"></span>
                                 </div>
 
                                 <!-- 権限 -->
