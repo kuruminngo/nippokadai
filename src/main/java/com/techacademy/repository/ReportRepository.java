@@ -15,4 +15,5 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
     boolean existsByEmployeeAndReportDate(Employee employee, LocalDate reportDate);
     // 特定従業員の日報一覧を取得
     List<Report> findByEmployee(Employee employee);
+    
 }

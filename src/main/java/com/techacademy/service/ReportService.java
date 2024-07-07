@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techacademy.constants.ErrorKinds;
+import com.techacademy.entity.Employee;
 import com.techacademy.entity.Report;
 import com.techacademy.repository.ReportRepository;
 
@@ -97,7 +98,7 @@ public class ReportService {
         }
 
         // 業務チェック：同一日付の日報が既に存在するか確認
-        boolean isDuplicate = reportRepository.existsByEmployeeAndReportDateAndIdNot(report.getEmployee(), report.getReportDate(), id);
+        boolean isDuplicate = reportRepository.existsByEmployeeAndReportDateAndIdNot(existingReport.getEmployee(), report.getReportDate(), id);
         if (isDuplicate) {
             return ErrorKinds.DATECHECK_ERROR; // 重複チェック
         }
@@ -112,14 +113,23 @@ public class ReportService {
     }
         // 日報削除
         @Transactional
-        public ErrorKinds delete(int id) {
+        public ErrorKinds delete(int id, UserDetail userDetail) {
             Report existingReport = findById(id);
             if (existingReport == null) {
                 return ErrorKinds.NOT_FOUND; // レコードが見つからない場合
+            }
+         // 権限のないユーザーからの削除を認めない
+            if (userDetail.getEmployee().getRole() != Employee.Role.ADMIN &&
+                    existingReport.getEmployee().getCode() != userDetail.getEmployee().getCode()) {
+                return ErrorKinds.NOT_FOUND;
             }
             existingReport.setDeleteFlg(true);
             existingReport.setUpdatedAt(LocalDateTime.now());
             reportRepository.save(existingReport);
             return ErrorKinds.SUCCESS;
+        }
+
+        public List<Report> findByEmployee(Employee employee) {
+            return reportRepository.findByEmployee(employee);
         }
     }
