@@ -29,18 +29,18 @@
                                      <tbody>
                                         <tr th:each="report:${reportList}"> <!-- 変更 -->
                                             <!-- 氏名 -->
-                                            <td class="align-middle" th:text="${report.name}"></td>
+                                            <td class="align-middle" th:text="${report.employee.name}"></td>
                                             <!-- 日付 -->
-                                            <td class="align-middle" th:text="${#dates.format(report.date, 'yyyy-MM-dd')}"></td>
+                                            <td class="align-middle" th:text="${#temporals.format(report.reportDate, 'yyyy-MM-dd')}"></td>
                                             <!-- タイトル -->
                                             <td class="align-middle" th:text="${report.title}"></td>
                                             <!-- 詳細ボタン -->
                                             <td class="align-middle">
-                                                <a th:href="@{/reports/{code}/(code=${report.code})}" class="btn btn-primary">詳細</a> <!-- 変更 -->
+                                                <a th:href="@{/reports/{id}/(id=${report.id})}" class="btn btn-primary">詳細</a> <!-- 変更 -->
                                             </td>
                                         </tr>
                                     </tbody>
-                                </table> 
+                                </table>
                             </div>
                         </div>
                         <p class="mb-3" th:text="'（ 全' + ${listSize} + '件 ）'">

@@ -23,8 +23,10 @@ public enum ErrorKinds {
     // 正常終了
     SUCCESS,
 
+    CONTENT_TOO_LONG, // /*追加*/
+    TITLE_TOO_LONG, // /*追加*/
 
-    NO_ERROR, // /*追加*/
-    NOT_FOUND; // /*追加*/
+    NO_ERROR,
+    NOT_FOUND;
 
 }

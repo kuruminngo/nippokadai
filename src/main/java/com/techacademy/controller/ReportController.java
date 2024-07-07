@@ -50,11 +50,11 @@ public class ReportController {
     }
 
     // 従業員詳細画面　追加
-    /*@GetMapping(value  = "/{id}/")
+    @GetMapping(value  = "/{id}/")
     public String detail(@PathVariable Integer id, Model model) {
         model.addAttribute("report", reportService.findById(id));
         return "reports/detail"; // このパスは templates/reports/detail.html に対応
-    }*/
+    }
 
 
     // 従業員新規登録処理
@@ -71,6 +71,28 @@ public class ReportController {
             return create(report,userDetail,model);
         }
         return "redirect:/reports";
+
+    }
+    // 日報更新画面表示
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable("id") int id, Model model) {
+        Report report = reportService.findById(id);
+        model.addAttribute("report", report);
+        return "reports/edit"; // このパスは src/main/resources/templates/reports/edit.html に対応
+    }
+
+    // 日報更新処理
+    @PostMapping("/{id}/edit")
+    public String updateReport(@PathVariable("id") int id, @Validated Report report, BindingResult res, Model model) {
+        if (res.hasErrors()) {
+            return showEditForm(id, model);
+        }
+        ErrorKinds result = reportService.update(id, report);
+        if (ErrorMessage.contains(result)) {
+            model.addAttribute(ErrorMessage.getErrorName(result), ErrorMessage.getErrorValue(result));
+            return showEditForm(id, model);
+        }
+        return "redirect:/reports"; // 更新後にリダイレクトするパス
     }
 
 }
